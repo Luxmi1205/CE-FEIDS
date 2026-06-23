@@ -216,3 +216,23 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project Datasets
+data/
+
+# Trained Models
+models/
+
+# MacOS
+.DS_Store
+
+# Deep Learning Models
+*.h5
+*.pth
+*.pt
+*.pkl
+
+# Experiment Outputs
+results/*.csv
+results/*.png
+results/*.jpg
