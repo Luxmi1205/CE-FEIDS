@@ -112,3 +112,11 @@ history = autoencoder.fit(
 )
 
 print("\nAutoencoder training completed successfully!")
+
+# Saving training history
+joblib.dump(
+    history.history,
+    "models/autoencoder/training_history.pkl"
+)
+
+print("Training history saved successfully!")
