@@ -1,0 +1,9 @@
+Baseline Autoencoder Evaluation
+===================================
+
+Threshold : 0.02352904
+Accuracy  : 0.9141
+Precision : 0.9987
+Recall    : 0.9133
+F1 Score  : 0.9541
+ROC-AUC   : 0.9312
