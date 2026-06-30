@@ -1,0 +1,9 @@
+Autoencoder Test Evaluation
+===================================
+
+Threshold : 0.02352904
+Accuracy  : 0.9141
+Precision : 0.9986
+Recall    : 0.9133
+F1 Score  : 0.9540
+ROC-AUC   : 0.9295

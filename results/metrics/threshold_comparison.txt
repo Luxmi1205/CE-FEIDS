@@ -1,0 +1,25 @@
+Threshold Comparison
+
+Mean + 3σ
+Accuracy : 0.9141
+Precision: 0.9987
+Recall   : 0.9133
+F1 Score : 0.9541
+ROC-AUC  : 0.9312
+
+95th Percentile
+Accuracy : 0.9135
+Precision: 0.9987
+Recall   : 0.9126
+F1 Score : 0.9537
+ROC-AUC  : 0.9324
+
+99th Percentile
+Accuracy : 0.8755
+Precision: 0.9997
+Recall   : 0.8727
+F1 Score : 0.9319
+ROC-AUC  : 0.9310
+
+Selected Threshold:
+Mean + 3σ
