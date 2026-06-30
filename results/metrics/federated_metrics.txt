@@ -1,0 +1,8 @@
+Federated Autoencoder Evaluation
+===================================
+Threshold : 0.02352904
+Accuracy  : 0.9016
+Precision : 0.9997
+Recall    : 0.8995
+F1 Score  : 0.9470
+ROC-AUC   : 0.9446

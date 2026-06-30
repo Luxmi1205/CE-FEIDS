@@ -1,0 +1,6 @@
+Metric,Centralized,Federated
+Accuracy,0.9141,0.9016
+Precision,0.9987,0.9997
+Recall,0.9133,0.8995
+F1 Score,0.9541,0.947
+ROC-AUC,0.9312,0.9446
