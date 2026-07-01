@@ -1,13 +1,24 @@
+import os
 import joblib
+
 import numpy as np
 import pandas as pd
-import shap
+
 import matplotlib.pyplot as plt
-import os
+
+import shap
+from lime.lime_tabular import LimeTabularExplainer
 
 from tensorflow.keras.models import load_model
 
-# Loading the federated model
+RESULTS_DIR = "results/explainability"
+
+os.makedirs(
+    RESULTS_DIR,
+    exist_ok=True
+)
+
+# Loading the federated autoencoder
 model = load_model(
     "models/federated/global_autoencoder.keras"
 )
@@ -18,7 +29,7 @@ print("Federated model loaded successfully!")
 X_validation = joblib.load(
     "data/processed/X_validation_scaled.pkl"
 )
-Y_validation = joblib.load(
+y_validation = joblib.load(
     "data/processed/y_validation.pkl"
 )
 print("Validation dataset loaded successfully!")
@@ -95,10 +106,7 @@ shap.plots.waterfall(
     max_display=10,
     show=False)
 
-plt.savefig(
-    "results/explainability/anomaly_score_waterfall.png",
-    dpi=300,
-    bbox_inches="tight")
+plt.savefig(f"{RESULTS_DIR}/attack_waterfall.png", dpi=300, bbox_inches="tight")
 
 plt.close()
 
@@ -107,10 +115,6 @@ print("\nAnomaly Score Waterfall plot saved successfully!")
 # absolute SHAP importance
 feature_importance = np.abs(
     anomaly_shap_values.values[0])
-
-sorted_indices = np.argsort(
-    feature_importance
-)[::-1]
 
 # Creating the dataframe
 importance_df = pd.DataFrame({
@@ -136,20 +140,15 @@ importance_df.to_csv(
 print("\nTop SHAP feature table saved successfully!")
 
 # Creating the SHAP explainer
-explainer = shap.Explainer(
+model_explainer = shap.Explainer(
     model,
     background
 )
 
 print("\nSHAP Explainer created successfully!")
 
-os.makedirs( # to save results
-    "results/explainability",
-    exist_ok=True
-)
-
 # Generating SHap values
-shap_values = explainer(sample)
+shap_values = model_explainer(sample)
 
 print("\nSHAP values generated successfully!")
 
@@ -164,11 +163,7 @@ shap.plots.waterfall(
     max_display=10,
     show=False)
 
-plt.savefig(
-    "results/explainability/shap_waterfall_output0.png",
-    dpi=300,
-    bbox_inches="tight"
-)
+plt.savefig(f"{RESULTS_DIR}/attack_waterfall.png", dpi=300, bbox_inches="tight")
 plt.close()
 
 print("\nSHAP Waterfall plot saved successfully!")
@@ -197,11 +192,7 @@ shap.summary_plot(
     feature_names=feature_names,
     show=False)
 
-plt.savefig(
-    "results/explainability/shap_summary_plot.png",
-    dpi=300,
-    bbox_inches="tight"
-)
+plt.savefig(f"{RESULTS_DIR}/attack_waterfall.png", dpi=300, bbox_inches="tight")
 plt.close()
 
 print("\nSHAP Summary Plot saved successfully!")
@@ -213,24 +204,20 @@ shap.plots.bar(
     max_display=10,
     show=False
 )
-plt.savefig(
-    "results/explainability/shap_bar_plot.png",
-    dpi=300,
-    bbox_inches="tight"
-)
+plt.savefig(f"{RESULTS_DIR}/attack_waterfall.png", dpi=300, bbox_inches="tight")
 plt.close()
 
 print("\nSHAP Bar Plot saved successfully!")
 
-#.............................Comparing attack and benign...................................
+#.............................Attack vs Benign SHAP Comparison...................................
 # Select one attack sample
-attack_sample = X_validation[Y_validation != "BenignTraffic"][:1]
+attack_sample = X_validation[y_validation != "BenignTraffic"][:1]
 
 print("\nAttack sample selected successfully!")
 print(attack_sample.shape)
 
 # Select one benign sample
-benign_sample = X_validation[Y_validation == "BenignTraffic"][:1]
+benign_sample = X_validation[y_validation == "BenignTraffic"][:1]
 
 print("\nBenign sample selected successfully!")
 print(benign_sample.shape)
@@ -251,11 +238,7 @@ shap.plots.waterfall(
     show=False
 )
 
-plt.savefig(
-    "results/explainability/attack_waterfall.png",
-    dpi=300,
-    bbox_inches="tight"
-)
+plt.savefig(f"{RESULTS_DIR}/attack_waterfall.png", dpi=300, bbox_inches="tight")
 plt.close()
 
 print("Attack waterfall plot saved successfully!")
@@ -275,12 +258,7 @@ shap.plots.waterfall(
     max_display=10,
     show=False
 )
-plt.savefig(
-    "results/explainability/benign_waterfall.png",
-    dpi=300,
-    bbox_inches="tight"
-)
-
+plt.savefig(f"{RESULTS_DIR}/attack_waterfall.png", dpi=300, bbox_inches="tight")
 plt.close()
 print("Benign waterfall plot saved successfully!")
 
@@ -300,3 +278,81 @@ with open(
     file.write("- top10_shap_features.csv\n")
 
 print("\nExplainability summary saved successfully!")
+
+#....................................Lime expainability..............................................
+lime_explainer = LimeTabularExplainer(
+    training_data=X_train_benign,
+    feature_names=feature_names,
+    mode="regression",
+    discretize_continuous=True)
+print("\nLIME Explainer created successfully!")
+
+# Generating LIME explanation for one attack sample
+lime_explanation = lime_explainer.explain_instance(
+    attack_sample[0],
+    anomaly_score,
+    num_features=10)
+
+print("\nLIME explanation generated successfully!")
+lime_explanation.save_to_file(
+    "results/explainability/lime_attack_explanation.html"
+)
+print("LIME HTML explanation saved successfully!")
+
+# Saving the feature list as a text
+with open(
+    "results/explainability/lime_attack_features.txt", "w"
+)as file:
+    for feature, weight in lime_explanation.as_list():
+        file.write(f"{feature}: {weight:.6f}\n")
+
+print("LIME feature list saved successfully!")
+
+# Creating LIME result figure 
+lime_figure = lime_explanation.as_pyplot_figure()
+plt.savefig(f"{RESULTS_DIR}/attack_waterfall.png", dpi=300, bbox_inches="tight")
+plt.close(lime_figure)
+
+print("LIME plot saved successfully!")
+
+
+# creating a comparison dictionary for SHAP and LIME
+comparison = {
+    "Aspect": [
+        "Explanation Type",
+        "Scope",
+        "Mathematical Basis",
+        "Speed",
+        "Global Explanation",
+        "Local Explanation",
+        "Our Project Output"
+    ],
+    "SHAP": [
+        "Feature attribution",
+        "Local + Global",
+        "Shapley Values",
+        "Slower",
+        "Yes",
+        "Yes",
+        "Waterfall, Summary, Bar"
+    ],
+    "LIME": [
+        "Local surrogate model",
+        "Local",
+        "Linear approximation",
+        "Faster",
+        "No",
+        "Yes",
+        "HTML, Feature List, Plot"
+    ]
+}
+
+comparison_df = pd.DataFrame(comparison) # for converting it to dataframe
+print("\nSHAP vs LIME Comparison")
+print(comparison_df)
+
+comparison_df.to_csv(
+    "results/explainability/shap_vs_lime.csv",
+    index=False) # for saving
+
+print("\nSHAP vs LIME comparison saved successfully!")
