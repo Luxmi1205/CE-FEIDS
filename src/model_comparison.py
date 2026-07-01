@@ -1,6 +1,28 @@
 import pandas as pd
 
+def load_metrics(file_path):
+    # this loads evaluation metrics from the text file
+    metrics = {}
+    with open(file_path, "r") as file:
+        for line in file:
+            if ":" in line:
+                key, value = line.split(":", 1)
+                try:
+                    metrics[key.strip()] = float(value.strip())
+                except ValueError:
+                    continue
+    return metrics
+
+centralized_metrics = load_metrics(
+    "results/metrics/test_metrics.txt"
+)
+
+federated_metrics = load_metrics(
+    "results/metrics/federated_metrics.txt"
+)
+
 comparison = pd.DataFrame({
+
     "Metric": [
         "Accuracy",
         "Precision",
@@ -8,19 +30,21 @@ comparison = pd.DataFrame({
         "F1 Score",
         "ROC-AUC"
     ],
+
     "Centralized": [
-        0.9141,
-        0.9987,
-        0.9133,
-        0.9541,
-        0.9312
+        centralized_metrics["Accuracy"],
+        centralized_metrics["Precision"],
+        centralized_metrics["Recall"],
+        centralized_metrics["F1 Score"],
+        centralized_metrics["ROC-AUC"]
     ],
+
     "Federated": [
-        0.9016,
-        0.9997,
-        0.8995,
-        0.9470,
-        0.9446
+        federated_metrics["Accuracy"],
+        federated_metrics["Precision"],
+        federated_metrics["Recall"],
+        federated_metrics["F1 Score"],
+        federated_metrics["ROC-AUC"]
     ]
 })
 

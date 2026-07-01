@@ -1,0 +1,8 @@
+Aspect,SHAP,LIME
+Explanation Type,Feature attribution,Local surrogate model
+Scope,Local + Global,Local
+Mathematical Basis,Shapley Values,Linear approximation
+Speed,Slower,Faster
+Global Explanation,Yes,No
+Local Explanation,Yes,Yes
+Our Project Output,"Waterfall, Summary, Bar","HTML, Feature List, Plot"

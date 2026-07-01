@@ -1,4 +1,5 @@
 import joblib
+import os
 import numpy as np
 
 from tensorflow.keras.models import load_model
@@ -50,6 +51,16 @@ validation_errors = np.mean(
 
 print("Validation reconstruction errors calculated successfully!")
 print(validation_errors.shape)
+
+os.makedirs( # saving reconstruction error
+    "results/reconstruction",
+    exist_ok=True)
+joblib.dump(
+    validation_errors,
+    "results/reconstruction/federated_validation_errors.pkl"
+)
+
+print("Federated validation reconstruction errors saved successfully!")
 
 # Load threshold
 with open("results/metrics/threshold.txt", "r") as file:

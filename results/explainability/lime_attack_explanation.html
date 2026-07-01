@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divL1CKKXVB3MPSHZ6"></div>
+        <div class="lime top_div" id="top_div0T7SVEUID4KSZKL"></div>
         
         <script>
-        var top_div = d3.select('#top_divL1CKKXVB3MPSHZ6').classed('lime top_div', true);
+        var top_div = d3.select('#top_div0T7SVEUID4KSZKL').classed('lime top_div', true);
         
         
                     var pp_div = top_div.append('div')
                                         .classed('lime predicted_value', true);
                     var pp_svg = pp_div.append('svg').style('width', '100%');
-                    var pp = new lime.PredictedValue(pp_svg, 0.024215835470111025, 0.0005788518267007578, 0.1156425612832166);
+                    var pp = new lime.PredictedValue(pp_svg, 0.024215835470111025, 0.0005801469242221667, 0.1220097085680937);
                     
         var exp_div;
             var exp = new lime.Explanation(["negative", "positive"]);
         
             exp_div = top_div.append('div').classed('lime explanation', true);
-            exp.show([["UDP <= 0.00", -0.043281797013494286], ["DNS <= 0.00", -0.03678843546875238], ["psh_flag_number <= 0.00", -0.022051350201605945], ["HTTP <= 0.00", -0.021220324012083357], ["ARP <= 0.00", -0.021212370467608942], ["0.15 < Weight <= 1.00", 0.004031690365321199], ["Variance <= 0.90", 0.002713833621098081], ["HTTPS <= 0.00", -0.0026593615493764127], ["0.00 < IAT <= 1.00", 0.0020529216681137944], ["0.32 < Number <= 0.89", 0.0018980825966712132]], 1, exp_div);
+            exp.show([["UDP <= 0.00", -0.04505174477171183], ["DNS <= 0.00", -0.0386917114199578], ["psh_flag_number <= 0.00", -0.022658572363508003], ["HTTP <= 0.00", -0.02022726807188586], ["syn_flag_number <= 0.00", -0.009861908675577114], ["0.15 < Weight <= 1.00", 0.003137169570842962], ["Variance <= 0.90", 0.0025101932017804183], ["0.00 < IAT <= 1.00", 0.0024341501866453853], ["HTTPS <= 0.00", -0.0019481969052680679], ["0.32 < Number <= 0.89", 0.0013452006099164907]], 1, exp_div);
             
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["UDP", "0.00", -0.043281797013494286], ["DNS", "0.00", -0.03678843546875238], ["psh_flag_number", "0.00", -0.022051350201605945], ["HTTP", "0.00", -0.021220324012083357], ["ARP", "0.00", -0.021212370467608942], ["Weight", "0.58", 0.004031690365321199], ["Variance", "0.09", 0.002713833621098081], ["HTTPS", "0.00", -0.0026593615493764127], ["IAT", "0.50", 0.0020529216681137944], ["Number", "0.61", 0.0018980825966712132]], 1, raw_div);
+            exp.show_raw_tabular([["UDP", "0.00", -0.04505174477171183], ["DNS", "0.00", -0.0386917114199578], ["psh_flag_number", "0.00", -0.022658572363508003], ["HTTP", "0.00", -0.02022726807188586], ["syn_flag_number", "0.00", -0.009861908675577114], ["Weight", "0.58", 0.003137169570842962], ["Variance", "0.09", 0.0025101932017804183], ["IAT", "0.50", 0.0024341501866453853], ["HTTPS", "0.00", -0.0019481969052680679], ["Number", "0.61", 0.0013452006099164907]], 1, raw_div);
         
         </script>
         </body></html>
