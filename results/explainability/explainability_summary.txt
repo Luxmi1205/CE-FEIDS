@@ -1,0 +1,10 @@
+CE-FEIDS Explainability Summary
+========================================
+
+Generated SHAP Artifacts:
+- anomaly_score_waterfall.png
+- attack_waterfall.png
+- benign_waterfall.png
+- shap_summary_plot.png
+- shap_bar_plot.png
+- top10_shap_features.csv

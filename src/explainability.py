@@ -18,7 +18,9 @@ print("Federated model loaded successfully!")
 X_validation = joblib.load(
     "data/processed/X_validation_scaled.pkl"
 )
-
+Y_validation = joblib.load(
+    "data/processed/y_validation.pkl"
+)
 print("Validation dataset loaded successfully!")
 print(f"Validation Shape: {X_validation.shape}")
 
@@ -219,3 +221,82 @@ plt.savefig(
 plt.close()
 
 print("\nSHAP Bar Plot saved successfully!")
+
+#.............................Comparing attack and benign...................................
+# Select one attack sample
+attack_sample = X_validation[Y_validation != "BenignTraffic"][:1]
+
+print("\nAttack sample selected successfully!")
+print(attack_sample.shape)
+
+# Select one benign sample
+benign_sample = X_validation[Y_validation == "BenignTraffic"][:1]
+
+print("\nBenign sample selected successfully!")
+print(benign_sample.shape)
+
+# Explaining attack samples
+attack_shap_values = anomaly_explainer(
+    attack_sample)
+
+print("\nAttack SHAP values generated successfully!")
+print(attack_shap_values.values.shape)
+
+# Creating waterfall plot
+plt.figure(figsize=(10, 6))
+
+shap.plots.waterfall(
+    attack_shap_values[0],
+    max_display=10,
+    show=False
+)
+
+plt.savefig(
+    "results/explainability/attack_waterfall.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+plt.close()
+
+print("Attack waterfall plot saved successfully!")
+
+# Explaining benign samples
+benign_shap_values = anomaly_explainer(
+    benign_sample)
+
+print("\nBenign SHAP values generated successfully!")
+print(benign_shap_values.values.shape)
+
+# Creating waterfall plot again for benign sample
+plt.figure(figsize=(10, 6))
+
+shap.plots.waterfall(
+    benign_shap_values[0],
+    max_display=10,
+    show=False
+)
+plt.savefig(
+    "results/explainability/benign_waterfall.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.close()
+print("Benign waterfall plot saved successfully!")
+
+# Generating summary report
+with open(
+    "results/explainability/explainability_summary.txt",
+    "w"
+) as file:
+    file.write("CE-FEIDS Explainability Summary\n")
+    file.write("=" * 40 + "\n\n")
+    file.write("Generated SHAP Artifacts:\n")
+    file.write("- anomaly_score_waterfall.png\n")
+    file.write("- attack_waterfall.png\n")
+    file.write("- benign_waterfall.png\n")
+    file.write("- shap_summary_plot.png\n")
+    file.write("- shap_bar_plot.png\n")
+    file.write("- top10_shap_features.csv\n")
+
+print("\nExplainability summary saved successfully!")
