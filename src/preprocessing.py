@@ -110,5 +110,15 @@ joblib.dump(X_test_scaled, f"{processed_data_dir}/X_test_scaled.pkl")
 joblib.dump(y_validation, f"{processed_data_dir}/y_validation.pkl")
 joblib.dump(y_test, f"{processed_data_dir}/y_test.pkl")
 
+# Save feature names for Explainability (SHAP/LIME)
+feature_names = X_train.columns.tolist()
+
+joblib.dump(
+    feature_names,
+    f"{processed_data_dir}/feature_names.pkl"
+)
+
+print("Feature names saved successfully!")
+
 print("\nProcessed datasets saved successfully!")
 print(f"Saved to: {processed_data_dir}")
