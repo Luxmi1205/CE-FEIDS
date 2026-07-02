@@ -1,0 +1,27 @@
+CE-FEIDS Evaluation Summary
+=============================================
+
+Centralized Autoencoder
+------------------------------
+Threshold   : 0.0235
+Accuracy    : 0.9141
+Precision   : 0.9986
+Recall      : 0.9133
+F1 Score    : 0.9540
+ROC-AUC     : 0.9295
+
+Federated Autoencoder
+------------------------------
+Threshold   : 0.0235
+Accuracy    : 0.9016
+Precision   : 0.9997
+Recall      : 0.8995
+F1 Score    : 0.9470
+ROC-AUC     : 0.9446
+
+Observations
+------------------------------
+Federated learning achieved performance close to the centralized model while securing decentralized training.
+Precision remained extremely high & indicating very few false alarms.
+Recall is slightly decreased due to the conservative anomaly thresholding
+ROC-AUC remaines competitive & demonstrating strong differentiation capability.
